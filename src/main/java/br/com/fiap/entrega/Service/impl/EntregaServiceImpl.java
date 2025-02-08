@@ -71,22 +71,21 @@ public class EntregaServiceImpl implements EntregaService {
     @Transactional
     public Entrega criarEntrega(Entrega entrega) {
 
-        entrega.atribuirDadosComplementaresDoCliente(restTemplate, objectMapper, clienteURL);
-
-        EntregaEntity entity = entregaMapper.converterEntregaParaEntregaEntity(entrega);
-
-        EntregaEntity entregaSalva = entregaRepository.save(entity);
-
         try {
+            entrega.atribuirDadosComplementaresDoCliente(restTemplate, objectMapper, clienteURL);
             // Atribuir o rastreamento para a posição do centro de distribuição
             Pair<String, String> latitudeAndlongitude = tool.getCordenadasPeloEndereco(enderecoCD);
-            rastreamentoService.criarRastreamento(new Rastreamento(entregaSalva.getPedidoid(),
+            rastreamentoService.criarRastreamento(new Rastreamento(entrega.getPedidoid(),
                     latitudeAndlongitude.getFirst(), latitudeAndlongitude.getSecond()));
 
         } catch (Exception e) {
             // TODO: Apenas logar o erro, não impactar a criação da entrega por conta de
             // rastreamento
         }
+
+        EntregaEntity entity = entregaMapper.converterEntregaParaEntregaEntity(entrega);
+
+        EntregaEntity entregaSalva = entregaRepository.save(entity);
 
         return entregaMapper.converterEntregaEntityParaEntrega(entregaSalva);
     }
@@ -155,7 +154,13 @@ public class EntregaServiceImpl implements EntregaService {
     @Transactional
     public Entrega atualizarEntrega(Integer id, Entrega entregaRequest) {
         EntregaEntity entregaEntity = obterEntregaEntityPorId(id);
-        entregaRequest.atribuirDadosComplementaresDoCliente(restTemplate, objectMapper, clienteURL);
+
+        try {
+            entregaRequest.atribuirDadosComplementaresDoCliente(restTemplate, objectMapper, clienteURL);
+        } catch (Exception e) {
+            // TODO: Apenas logar o erro, não impactar a criação da entrega por conta de
+            // adição de dados complementares
+        }
 
         Entrega entrega = entregaMapper.converterEntregaEntityParaEntrega(entregaEntity);
 
@@ -173,7 +178,6 @@ public class EntregaServiceImpl implements EntregaService {
         entregaEntity.setStatusentrega(entregaRequest.getStatusentrega());
         entregaEntity.setEntregador(entregaRequest.getEntregador());
 
-        
         EntregaEntity entregaEntityAtualizado = entregaRepository.save(entregaEntity);
 
         return entregaMapper.converterEntregaEntityParaEntrega(entregaEntityAtualizado);

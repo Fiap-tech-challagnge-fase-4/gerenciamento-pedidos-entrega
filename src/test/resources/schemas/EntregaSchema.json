@@ -13,10 +13,16 @@
       "type": "integer"
     },
     "dadosentrega": {
-      "type": "string"
+      "oneOf": [
+        { "type": "string" },
+        { "type": "null" }
+      ]
     },
     "cep": {
-      "type": "string"
+      "oneOf": [
+        { "type": "string" },
+        { "type": "null" }
+      ]
     },
     "dataenvio": {
       "oneOf": [

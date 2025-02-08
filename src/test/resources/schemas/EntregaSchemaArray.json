@@ -8,18 +8,15 @@
       "clienteid": { "type": "integer" },
       "dadosentrega": { "type": "string" },
       "cep": { "type": "string" },
-      "dataenvio": { 
-        "type": "string", 
-        "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}$" 
+      "dataenvio": {
+        "type": "string",
+        "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.\\d{5,}$"
       },
-      "dataprevistaentrega": { 
-        "type": "string", 
-        "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}$" 
+      "dataprevistaentrega": {
+        "type": "string",
+        "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.\\d{5,}$"
       },
-      "dataentrega": { 
-        "type": ["string", "null"], 
-        "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}$" 
-      },
+      "dataentrega": { "type": ["string", "null"] },
       "statusentrega": { "type": "string" },
       "entregador": { "type": "string" }
     },

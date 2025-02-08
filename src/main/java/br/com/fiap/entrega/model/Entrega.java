@@ -51,7 +51,7 @@ public class Entrega {
                                                                     // API externa e calcular com base em distancia!
         this.statusentrega = StatusEntrega.PENDENTE;
         this.entregador = "TRANSPORTES FIAP"; // Se der tempo efetuar um cadastro de entregadores
-  }
+    }
 
     public boolean isPendente() {
         return statusentrega == StatusEntrega.PENDENTE;

@@ -1,11 +1,13 @@
 package br.com.fiap.entrega.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import br.com.fiap.entrega.Service.EntregaService;
+import br.com.fiap.entrega.mapper.EntregaMapper;
 import br.com.fiap.entrega.model.Entrega;
+import br.com.fiap.entrega.model.dto.EntregaResponseDTO;
+import br.com.fiap.entrega.model.dto.EntregaRequestDTO;
+import br.com.fiap.entrega.service.EntregaService;
 
 import java.util.List;
 
@@ -13,39 +15,60 @@ import java.util.List;
 @RequestMapping("/api/entrega")
 public class EntregaController {
 
-    @Autowired
-    private EntregaService entregaService;
+    private final EntregaMapper entregaMapper;
+	private final EntregaService entregaService;
+
+    public EntregaController(EntregaService entregaService, EntregaMapper entregaMapper) {
+        this.entregaService = entregaService;
+        this.entregaMapper = entregaMapper;
+    }
 
     @GetMapping
-    public List<Entrega> listarEntrega() {
-        return entregaService.listarEntrega();
-    }
+	@ResponseStatus(HttpStatus.OK)
+	public List<EntregaResponseDTO> listarEntregas() {
+		List<Entrega> entregas = entregaService.listarEntregas();
+		return entregas.stream().map(entregaMapper::converterEntregaParaResponseDTO).toList();
+	}
 
     @PostMapping
-    public Entrega criarEntrega(@RequestBody Entrega entrega) {
-        return entregaService.criarEntrega(entrega);
-    }
+    @ResponseStatus(HttpStatus.CREATED)
+    public EntregaResponseDTO criarEntrega(@RequestBody EntregaRequestDTO entregaRequestDTO) {
+		Entrega entrega = entregaMapper.converterRequestDTOParaEntrega(entregaRequestDTO);
+		Entrega entregaCriado = entregaService.criarEntrega(entrega);
+		return entregaMapper.converterEntregaParaResponseDTO(entregaCriado);
+	}
 
     @PutMapping("/finalizar/{id}")
-    public Entrega finalizarEntrega(@PathVariable Integer id) {
-        return entregaService.finalizarEntrega(id);
+    @ResponseStatus(HttpStatus.OK)
+    public void finalizarEntrega(@PathVariable Integer id) {
+        entregaService.finalizarEntrega(id);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Entrega> obterEntrega(@PathVariable Integer id) {
+    @ResponseStatus(HttpStatus.OK)
+    public EntregaResponseDTO  obterEntrega(@PathVariable Integer id) {
         Entrega entrega = entregaService.obterEntrega(id);
-        return entrega != null ? ResponseEntity.ok(entrega) : ResponseEntity.notFound().build();
+		return entregaMapper.converterEntregaParaResponseDTO(entrega);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Entrega> atualizarEntrega(@PathVariable Integer id, @RequestBody Entrega entrega) {
-        Entrega entregaAtualizado = entregaService.atualizarEntrega(id, entrega);
-        return entregaAtualizado != null ? ResponseEntity.ok(entregaAtualizado) : ResponseEntity.notFound().build();
+    @ResponseStatus(HttpStatus.OK)
+    public EntregaResponseDTO  atualizarEntrega(@PathVariable Integer id, @RequestBody EntregaRequestDTO entregaRequest) {
+        Entrega entregaModificado = entregaMapper.converterRequestDTOParaEntrega(entregaRequest);
+		Entrega entregaAtualizado = entregaService.atualizarEntrega(id, entregaModificado);
+		return entregaMapper.converterEntregaParaResponseDTO(entregaAtualizado);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluirEntrega(@PathVariable Integer id) {
+    @ResponseStatus(HttpStatus.OK)
+    public void excluirEntrega(@PathVariable Integer id) {
         entregaService.excluirEntrega(id);
-        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/agrupar/{cep}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<EntregaResponseDTO> agruparEntregaPendentePorCEP(@PathVariable String cep) {
+        List<Entrega> entregas = entregaService.agruparEntregaPendentePorCEP(cep);
+		return entregas.stream().map(entregaMapper::converterEntregaParaResponseDTO).toList();
     }
 }

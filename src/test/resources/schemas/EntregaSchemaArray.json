@@ -1,0 +1,28 @@
+{
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "id": { "type": "integer" },
+      "pedidoid": { "type": "integer" },
+      "clienteid": { "type": "integer" },
+      "dadosentrega": { "type": "string" },
+      "cep": { "type": "string" },
+      "dataenvio": { 
+        "type": "string", 
+        "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}$" 
+      },
+      "dataprevistaentrega": { 
+        "type": "string", 
+        "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}$" 
+      },
+      "dataentrega": { 
+        "type": ["string", "null"], 
+        "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}$" 
+      },
+      "statusentrega": { "type": "string" },
+      "entregador": { "type": "string" }
+    },
+    "required": ["id", "pedidoid", "clienteid", "dadosentrega", "cep", "dataenvio", "dataprevistaentrega", "statusentrega", "entregador"]
+  }
+}

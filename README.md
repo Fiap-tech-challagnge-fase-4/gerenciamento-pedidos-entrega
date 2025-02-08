@@ -65,4 +65,3 @@ Consulte a documentação do Swagger UI para ver todos os endpoints disponíveis
 ## Configuração do Banco de Dados
 
 Por padrão, o projeto utiliza o banco de dados H2.
-# gerenciamento-pedidos-entrega

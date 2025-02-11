@@ -49,7 +49,7 @@ public class RastreamentoControllerIT {
 		// Act & Assert
 		given().filter(new AllureRestAssured()).contentType(MediaType.APPLICATION_JSON_VALUE)
 			.body(request)
-			.when().post("/api/rastreamento")
+			.when().post("/api/rastreamentos")
 			.then().statusCode(HttpStatus.CREATED.value())
 			.body(matchesJsonSchemaInClasspath("./schemas/RastreamentoSchema.json"))
 			.body("$", hasKey("pedidoid"))
@@ -75,7 +75,7 @@ public class RastreamentoControllerIT {
 		// Act & Assert
 		given().filter(new AllureRestAssured())
 			.contentType(MediaType.APPLICATION_JSON_VALUE)
-			.when().get("/api/rastreamento/999")
+			.when().get("/api/rastreamentos/999")
 			.then().statusCode(HttpStatus.OK.value())
 			.body(matchesJsonSchemaInClasspath("./schemas/RastreamentoSchemaArray.json"))
 			.body("size()", equalTo(2));

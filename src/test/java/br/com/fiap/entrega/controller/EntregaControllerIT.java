@@ -50,7 +50,7 @@ class EntregaControllerIT {
 		// Act & Assert
 		given().filter(new AllureRestAssured()).contentType(MediaType.APPLICATION_JSON_VALUE)
 			.body(request)
-			.when().post("/api/entrega")
+			.when().post("/api/entregas")
 			.then().statusCode(HttpStatus.CREATED.value())
 			.body(matchesJsonSchemaInClasspath("./schemas/EntregaSchema.json"))
 			.body("$", hasKey("pedidoid"))
@@ -82,7 +82,7 @@ class EntregaControllerIT {
 		// Act & Assert
 		given().filter(new AllureRestAssured())
 			.contentType(MediaType.APPLICATION_JSON_VALUE)
-			.when().get("/api/entrega")
+			.when().get("/api/entregas")
 			.then().statusCode(HttpStatus.OK.value())
 			.body(matchesJsonSchemaInClasspath("./schemas/EntregaSchemaArray.json"))
 			.body("size()", equalTo(2));
@@ -99,8 +99,23 @@ class EntregaControllerIT {
 		// Act & Assert
 		given().filter(new AllureRestAssured())
 			.contentType(MediaType.APPLICATION_JSON_VALUE)
-			.when().put("/api/entrega/finalizar/{id}", entity.getId())
+			.when().put("/api/entregas/finalizar/{id}", entity.getId())
 			.then().statusCode(HttpStatus.OK.value());
+	}
+
+	@Test
+	void naoDevePermitirFinalizarEntrega() {
+		// Arrange
+		EntregaEntity entity = entregaRepository.save(new EntregaEntity(
+			1, 999, 123, "Rua boa saguairu, 33, sao paulo", "02488-789", 
+			LocalDateTime.now(), LocalDateTime.now().plusDays(5), null, StatusEntrega.ENTREGUE, "FIAP TRANSPORTADORA" 
+		));
+
+		// Act & Assert
+		given().filter(new AllureRestAssured())
+			.contentType(MediaType.APPLICATION_JSON_VALUE)
+			.when().put("/api/entregas/finalizar/{id}", entity.getId())
+			.then().statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
 	}
 
 	@Test
@@ -114,7 +129,7 @@ class EntregaControllerIT {
 		// Act & Assert
 		given().filter(new AllureRestAssured())
 			.contentType(MediaType.APPLICATION_JSON_VALUE)
-			.when().get("/api/entrega/1")
+			.when().get("/api/entregas/1")
 			.then().statusCode(HttpStatus.OK.value())
 			.body(matchesJsonSchemaInClasspath("./schemas/EntregaSchema.json"));
 	}
@@ -134,7 +149,7 @@ class EntregaControllerIT {
 		// Act & Assert
 		given().filter(new AllureRestAssured())
 			.contentType(MediaType.APPLICATION_JSON_VALUE).body(request)
-			.when().put("/api/entrega/{id}", entity.getId())
+			.when().put("/api/entregas/{id}", entity.getId())
 			.then().statusCode(HttpStatus.OK.value())
 			.body(matchesJsonSchemaInClasspath("./schemas/EntregaSchema.json"));
 	}
@@ -150,7 +165,7 @@ class EntregaControllerIT {
 		// Act & Assert
 		given().filter(new AllureRestAssured())
 			.contentType(MediaType.APPLICATION_JSON_VALUE)
-			.when().delete("/api/entrega/{id}", entity.getId())
+			.when().delete("/api/entregas/{id}", entity.getId())
 			.then().statusCode(HttpStatus.OK.value());
 	}
 
@@ -175,7 +190,7 @@ class EntregaControllerIT {
 		// Act & Assert
 		given().filter(new AllureRestAssured())
 			.contentType(MediaType.APPLICATION_JSON_VALUE)
-			.when().get("/api/entrega/agrupar/024")
+			.when().get("/api/entregas/agrupar/024")
 			.then().statusCode(HttpStatus.OK.value())
 			.body(matchesJsonSchemaInClasspath("./schemas/EntregaSchemaArray.json"))
 			.body("size()", equalTo(2));

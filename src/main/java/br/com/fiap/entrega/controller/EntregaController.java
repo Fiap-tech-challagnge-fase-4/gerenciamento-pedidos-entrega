@@ -12,7 +12,7 @@ import br.com.fiap.entrega.service.EntregaService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/entrega")
+@RequestMapping("/api/entregas")
 public class EntregaController {
 
     private final EntregaMapper entregaMapper;

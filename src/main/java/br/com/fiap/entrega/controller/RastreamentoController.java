@@ -18,7 +18,7 @@ import br.com.fiap.entrega.model.dto.RastreamentoResponseDTO;
 import br.com.fiap.entrega.service.RastreamentoService;
 
 @RestController
-@RequestMapping("/api/rastreamento")
+@RequestMapping("/api/rastreamentos")
 public class RastreamentoController {
 
     private final RastreamentoMapper rastreamentoMapper;

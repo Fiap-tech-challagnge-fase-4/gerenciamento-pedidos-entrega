@@ -1,8 +1,6 @@
 package br.com.fiap.entrega.model;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.NoSuchElementException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +10,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.fiap.entrega.enums.StatusEntrega;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.Getter;
 
 @Getter
@@ -28,7 +25,7 @@ public class Entrega {
     private LocalDateTime dataentrega;
     private StatusEntrega statusentrega;
     private String entregador;
- 
+
     public Entrega(Integer id, Integer pedidoid, Integer clienteid, String dadosentrega, String cep,
             LocalDateTime dataenvio, LocalDateTime dataprevistaentrega, LocalDateTime dataentrega,
             StatusEntrega statusentrega, String entregador) {
@@ -57,18 +54,22 @@ public class Entrega {
         return statusentrega == StatusEntrega.PENDENTE;
     }
 
-    public void atribuirDadosComplementaresDoCliente(RestTemplate restTemplate, ObjectMapper objectMapper, String clienteURL) {
-        
-        ResponseEntity<String> response = restTemplate.getForEntity(
-                clienteURL + "{id}",
-                String.class,
-                this.clienteid);
+    public void atribuirDadosComplementaresDoCliente(RestTemplate restTemplate, ObjectMapper objectMapper,
+            String clienteURL) {
 
-        // Acessa outro microserviço para capturar os dados de entrega do cliente
-        if (!response.hasBody() || response.getBody().isEmpty() || response.getStatusCode() == HttpStatus.NOT_FOUND) {
-            throw new NoSuchElementException("Cliente não encontrado");
-        } else {
-            try {
+        try {
+
+            ResponseEntity<String> response = restTemplate.getForEntity(
+                    clienteURL + "{id}",
+                    String.class,
+                    this.clienteid);
+
+            // Acessa outro microserviço para capturar os dados de entrega do cliente
+            if (!response.hasBody() || response.getBody().isEmpty()
+                    || response.getStatusCode() == HttpStatus.NOT_FOUND) {
+                return;
+            } else {
+
                 JsonNode produtoJson = objectMapper.readTree(response.getBody());
 
                 String dadosentrega = "Nome: " + produtoJson.get("nome").asText() +
@@ -79,9 +80,12 @@ public class Entrega {
                 this.dadosentrega = dadosentrega;
                 this.cep = produtoJson.get("cep").asText();
 
-            } catch (IOException e) {
-                throw new EntityNotFoundException("Não foi possível carregar os dados complementares do cliente.");
             }
+        } catch (Exception e) {
+            // throw new EntityNotFoundException("Não foi possível carregar os dados
+            // complementares do cliente.");
+            // Apenas logar a exception, não faz sentido parar o processo por conta de uma
+            // falha de dados complementares
         }
 
     }

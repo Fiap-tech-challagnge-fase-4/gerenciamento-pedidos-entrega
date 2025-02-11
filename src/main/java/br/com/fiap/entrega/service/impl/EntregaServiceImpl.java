@@ -71,8 +71,9 @@ public class EntregaServiceImpl implements EntregaService {
     @Transactional
     public Entrega criarEntrega(Entrega entrega) {
 
+        entrega.atribuirDadosComplementaresDoCliente(restTemplate, objectMapper, clienteURL);
+        
         try {
-            entrega.atribuirDadosComplementaresDoCliente(restTemplate, objectMapper, clienteURL);
             // Atribuir o rastreamento para a posição do centro de distribuição
             Pair<String, String> latitudeAndlongitude = tool.getCordenadasPeloEndereco(enderecoCD);
             rastreamentoService.criarRastreamento(new Rastreamento(entrega.getPedidoid(),
@@ -155,18 +156,13 @@ public class EntregaServiceImpl implements EntregaService {
     public Entrega atualizarEntrega(Integer id, Entrega entregaRequest) {
         EntregaEntity entregaEntity = obterEntregaEntityPorId(id);
 
-        try {
-            entregaRequest.atribuirDadosComplementaresDoCliente(restTemplate, objectMapper, clienteURL);
-        } catch (Exception e) {
-            // TODO: Apenas logar o erro, não impactar a criação da entrega por conta de
-            // adição de dados complementares
-        }
+        entregaRequest.atribuirDadosComplementaresDoCliente(restTemplate, objectMapper, clienteURL);
 
         Entrega entrega = entregaMapper.converterEntregaEntityParaEntrega(entregaEntity);
 
         if (!entrega.isPendente()) {
             throw new IllegalStateException("A entrega não pode ser mais atualizada.");
-        } 
+        }
 
         entregaEntity.setPedidoid(entregaRequest.getPedidoid());
         entregaEntity.setClienteid(entregaRequest.getClienteid());

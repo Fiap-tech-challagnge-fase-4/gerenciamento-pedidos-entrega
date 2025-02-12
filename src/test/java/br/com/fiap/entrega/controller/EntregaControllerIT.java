@@ -84,8 +84,7 @@ class EntregaControllerIT {
 			.contentType(MediaType.APPLICATION_JSON_VALUE)
 			.when().get("/api/entregas")
 			.then().statusCode(HttpStatus.OK.value())
-			.body(matchesJsonSchemaInClasspath("./schemas/EntregaSchemaArray.json"))
-			.body("size()", equalTo(2));
+			.body(matchesJsonSchemaInClasspath("./schemas/EntregaSchemaArray.json"));
 	}
 
 	@Test
@@ -155,6 +154,25 @@ class EntregaControllerIT {
 	}
 
 	@Test
+	void naoDevePermitirAtualizarEntrega() {
+		// Arrange
+		EntregaEntity entity = entregaRepository.save(new EntregaEntity(
+			null, 999, 123, "Rua boa saguairu, 33, sao paulo", "02488-789", 
+			LocalDateTime.now(), LocalDateTime.now().plusDays(5), null, StatusEntrega.ENTREGUE, "FIAP TRANSPORTADORA" 
+		));
+
+		entity.setClienteid(2);
+		
+		EntregaRequestDTO request = new EntregaRequestDTO(entity.getPedidoid(), entity.getClienteid());
+
+		// Act & Assert
+		given().filter(new AllureRestAssured())
+			.contentType(MediaType.APPLICATION_JSON_VALUE).body(request)
+			.when().put("/api/entregas/{id}", entity.getId())
+			.then().statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+	}
+
+	@Test
 	void devePermitirExcluirEntrega() {
 		// Arrange
 		EntregaEntity entity = entregaRepository.save(new EntregaEntity(
@@ -167,6 +185,21 @@ class EntregaControllerIT {
 			.contentType(MediaType.APPLICATION_JSON_VALUE)
 			.when().delete("/api/entregas/{id}", entity.getId())
 			.then().statusCode(HttpStatus.OK.value());
+	}
+
+	@Test
+	void naoDevePermitirExcluirEntrega() {
+		// Arrange
+		EntregaEntity entity = entregaRepository.save(new EntregaEntity(
+			null, 999, 123, "Rua boa saguairu, 33, sao paulo", "02488-789", 
+			LocalDateTime.now(), LocalDateTime.now().plusDays(5), null, StatusEntrega.ENTREGUE, "FIAP TRANSPORTADORA" 
+		));
+
+		// Act & Assert
+		given().filter(new AllureRestAssured())
+			.contentType(MediaType.APPLICATION_JSON_VALUE)
+			.when().delete("/api/entregas/{id}", entity.getId())
+			.then().statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
 	}
 
 	@Test

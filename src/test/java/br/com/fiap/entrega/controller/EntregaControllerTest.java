@@ -150,15 +150,15 @@ public class EntregaControllerTest {
     void devePermitirObterEntrega() throws Exception {
 
         // Arrange
-        Integer id = 1;
         Entrega response = gerarUmaEntrega();
+        EntregaRequestDTO request = gerarUmaEntregaRequestDTO();
         when(entregaService.obterEntrega(anyInt())).thenReturn(response);
 
         // Act & Assert
         mockMvc.perform(
-                get("/api/entregas/{id}", id).contentType(MediaType.APPLICATION_JSON).content(asJsonString(response)))
+                get("/api/entregas/1").contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(asJsonString(request)))
                 .andExpect(status().isOk())
-                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.pedidoid").value(222))
                 .andExpect(jsonPath("$.clienteid").value(123))

@@ -1,13 +1,9 @@
 package br.com.fiap.entrega.controller;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -88,7 +84,7 @@ public class RastreamentoControllerTest {
         when(rastreamentoService.listarRastreamentoPorPedidoId(123)).thenReturn(rastreamentos);
 
         // Act & Assert
-        mockMvc.perform(get("/api/rastreamentos"))
+        mockMvc.perform(get("/api/rastreamentos/123"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(2))
                 .andExpect(jsonPath("$[0].pedidoid").value(123))

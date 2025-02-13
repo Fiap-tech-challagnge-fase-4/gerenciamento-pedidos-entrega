@@ -75,7 +75,7 @@ public class RastreamentoControllerTest {
     }
 
     @Test
-    void devePermitirListarRastreamentos() throws Exception {
+    void devePermitirlistarRastreamentoPorPedidoId() throws Exception {
 
         // Arrange
         List<Rastreamento> rastreamentos = Arrays.asList(

@@ -114,7 +114,7 @@ class EntregaControllerIT {
 		given().filter(new AllureRestAssured())
 			.contentType(MediaType.APPLICATION_JSON_VALUE)
 			.when().put("/api/entregas/finalizar/{id}", entity.getId())
-			.then().statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+			.then().statusCode(HttpStatus.BAD_REQUEST.value());
 	}
 
 	@Test
@@ -169,7 +169,7 @@ class EntregaControllerIT {
 		given().filter(new AllureRestAssured())
 			.contentType(MediaType.APPLICATION_JSON_VALUE).body(request)
 			.when().put("/api/entregas/{id}", entity.getId())
-			.then().statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+			.then().statusCode(HttpStatus.BAD_REQUEST.value());
 	}
 
 	@Test
@@ -199,7 +199,7 @@ class EntregaControllerIT {
 		given().filter(new AllureRestAssured())
 			.contentType(MediaType.APPLICATION_JSON_VALUE)
 			.when().delete("/api/entregas/{id}", entity.getId())
-			.then().statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+			.then().statusCode(HttpStatus.BAD_REQUEST.value());
 	}
 
 	@Test

@@ -6,19 +6,19 @@
       "id": { "type": "integer" },
       "pedidoid": { "type": "integer" },
       "clienteid": { "type": "integer" },
-      "dadosentrega": { "type": "string" },
-      "cep": { "type": "string" },
+      "dadosentrega": { "type": ["string", "null"] },
+      "cep": { "type": ["string", "null"] },
       "dataenvio": {
-        "type": "string",
+        "type": ["string", "null"],
         "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.\\d{5,}$"
       },
       "dataprevistaentrega": {
-        "type": "string",
+        "type": ["string", "null"],
         "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.\\d{5,}$"
       },
       "dataentrega": { "type": ["string", "null"] },
       "statusentrega": { "type": "string" },
-      "entregador": { "type": "string" }
+      "entregador": { "type": ["string", "null"] }
     },
     "required": ["id", "pedidoid", "clienteid", "dadosentrega", "cep", "dataenvio", "dataprevistaentrega", "statusentrega", "entregador"]
   }

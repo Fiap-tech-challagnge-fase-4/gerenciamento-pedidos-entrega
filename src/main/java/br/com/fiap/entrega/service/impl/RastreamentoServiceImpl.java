@@ -18,9 +18,9 @@ public class RastreamentoServiceImpl implements RastreamentoService {
    private final RastreamentoMapper rastreamentoMapper;
     private final RastreamentoRepository rastreamentoRepository;
 
-    public RastreamentoServiceImpl(RastreamentoMapper entregaMapper, RastreamentoRepository entregaRepository) {
-        this.rastreamentoMapper = entregaMapper;
-        this.rastreamentoRepository = entregaRepository;
+    public RastreamentoServiceImpl(RastreamentoMapper mapper, RastreamentoRepository repository) {
+        this.rastreamentoMapper = mapper;
+        this.rastreamentoRepository = repository;
     }
 
     // Método para criar uma nova linha representando o rastreamento

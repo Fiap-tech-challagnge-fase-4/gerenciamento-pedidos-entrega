@@ -60,7 +60,7 @@ public class RastreamentoControllerIT {
 	}
 
 	@Test
-	void listarRastreamentoPorPedidoId() {
+	void devePermitirlistarRastreamentoPorPedidoId() {
 	
 		rastreamentoRepository.save(new RastreamentoEntity(
 			null, 999, "12345", "-678910",

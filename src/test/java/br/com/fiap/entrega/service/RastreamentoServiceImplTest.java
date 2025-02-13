@@ -23,7 +23,7 @@ import br.com.fiap.entrega.model.entity.RastreamentoEntity;
 import br.com.fiap.entrega.repository.RastreamentoRepository;
 import br.com.fiap.entrega.service.impl.RastreamentoServiceImpl;
 
-public class RastreamentoServiceImplTest {
+class RastreamentoServiceImplTest {
 
     @Mock
     private RastreamentoRepository rastreamentoRepository;

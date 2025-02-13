@@ -18,6 +18,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.web.client.RestTemplate;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.fiap.entrega.enums.StatusEntrega;
 import br.com.fiap.entrega.mapper.EntregaMapper;
@@ -27,10 +30,16 @@ import br.com.fiap.entrega.repository.EntregaRepository;
 import br.com.fiap.entrega.service.impl.EntregaServiceImpl;
 
 
-public class EntregaServiceImplTest {
+class EntregaServiceImplTest {
 
     @Mock
     private EntregaRepository entregaRepository;
+    @Mock
+    RestTemplate restTemplate;
+    @Mock
+	ObjectMapper objectMapper;
+    @Mock
+	RastreamentoService rastreamentoService;
     
     private EntregaServiceImpl entregaServiceImpl;
 
@@ -40,7 +49,7 @@ public class EntregaServiceImplTest {
 	void setup(){
 		openMocks = MockitoAnnotations.openMocks(this);
 		EntregaMapper entregaMapper = new EntregaMapper();
-		entregaServiceImpl = new EntregaServiceImpl(entregaMapper, entregaRepository);
+		entregaServiceImpl = new EntregaServiceImpl(entregaMapper, entregaRepository, restTemplate, objectMapper, rastreamentoService);
 	}
 
 	@AfterEach

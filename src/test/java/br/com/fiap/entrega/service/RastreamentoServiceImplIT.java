@@ -20,7 +20,7 @@ import br.com.fiap.entrega.repository.RastreamentoRepository;
 @AutoConfigureTestDatabase
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class RastreamentoServiceImplIT {
+class RastreamentoServiceImplIT {
 
     @LocalServerPort
 	private int port;

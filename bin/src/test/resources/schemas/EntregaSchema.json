@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Entrega",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer"
+    },
+    "pedidoid": {
+      "type": "integer"
+    },
+    "clienteid": {
+      "type": "integer"
+    },
+    "dadosentrega": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "null" }
+      ]
+    },
+    "cep": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "null" }
+      ]
+    },
+    "dataenvio": {
+      "oneOf": [
+        { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{1,7}$" },
+        { "type": "null" }
+      ]
+    },
+    "dataprevistaentrega": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{1,7}$"
+    },
+    "dataentrega": {
+      "oneOf": [
+        { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{1,7}$" },
+        { "type": "null" }
+      ]
+    },
+    "statusentrega": {
+      "type": "string"
+    },
+    "entregador": {
+      "type": "string"
+    }
+  },
+  "required": ["id", "pedidoid", "clienteid", "dadosentrega", "cep", "dataenvio", "dataprevistaentrega", "statusentrega", "entregador"]
+}

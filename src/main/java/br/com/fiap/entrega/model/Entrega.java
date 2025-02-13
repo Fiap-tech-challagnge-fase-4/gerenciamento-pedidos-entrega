@@ -65,25 +65,21 @@ public class Entrega {
                     this.clienteid);
 
             // Acessa outro microserviço para capturar os dados de entrega do cliente
-            if (!response.hasBody() || response.getBody().isEmpty()
-                    || response.getStatusCode() == HttpStatus.NOT_FOUND) {
-                return;
-            } else {
+            if (response.getBody() != null && response.hasBody() && response.getStatusCode() != HttpStatus.NOT_FOUND) {
 
                 JsonNode produtoJson = objectMapper.readTree(response.getBody());
 
-                String dadosentrega = "Nome: " + produtoJson.get("nome").asText() +
+                String dadosendereco = "Nome: " + produtoJson.get("nome").asText() +
                         " - Telefone: " + produtoJson.get("telefone").asText() +
                         " - Endereço: " + produtoJson.get("endereco").asText() +
                         " - CEP: " + produtoJson.get("cep").asText();
 
-                this.dadosentrega = dadosentrega;
+                this.dadosentrega = dadosendereco;
                 this.cep = produtoJson.get("cep").asText();
 
             }
         } catch (Exception e) {
-            // throw new EntityNotFoundException("Não foi possível carregar os dados
-            // complementares do cliente.");
+            // Falta mocar getForEntity, já implementado em outros testes.
             // Apenas logar a exception, não faz sentido parar o processo por conta de uma
             // falha de dados complementares
         }

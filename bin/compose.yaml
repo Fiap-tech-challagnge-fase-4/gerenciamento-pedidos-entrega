@@ -1,0 +1,10 @@
+services:
+  postgres:
+    image: 'postgres:latest'
+    container_name: entregaDB
+    environment:
+      - 'POSTGRES_DB=entregaDB'
+      - 'POSTGRES_PASSWORD=password'
+      - 'POSTGRES_USER=sa'
+    ports:
+      - '5433:5432'

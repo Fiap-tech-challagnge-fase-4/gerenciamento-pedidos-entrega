@@ -9,7 +9,6 @@ import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.util.Pair;
 
@@ -29,11 +28,24 @@ public class EntregaServiceImpl implements EntregaService {
 
     private final EntregaMapper entregaMapper;
     private final EntregaRepository entregaRepository;
+    private final RestTemplate restTemplate;
+    private final ObjectMapper objectMapper;
+    private final RastreamentoService rastreamentoService;
+    
     private Tools tool = new Tools();
 
-    public EntregaServiceImpl(EntregaMapper entregaMapper, EntregaRepository entregaRepository) {
+    public EntregaServiceImpl(
+    							EntregaMapper entregaMapper,
+    							EntregaRepository entregaRepository,
+    							RestTemplate restTemplate,
+    							ObjectMapper objectMapper,
+    							RastreamentoService rastreamentoService
+    						) {
         this.entregaMapper = entregaMapper;
         this.entregaRepository = entregaRepository;
+        this.restTemplate = restTemplate;
+        this.objectMapper = objectMapper;
+        this.rastreamentoService = rastreamentoService;
     }
 
     @Value("${pedido.url}")
@@ -44,15 +56,6 @@ public class EntregaServiceImpl implements EntregaService {
 
     @Value("${endereco.centrodistribuicao}")
     private String enderecoCD;
-
-    @Autowired
-    private RestTemplate restTemplate;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
-    private RastreamentoService rastreamentoService;
 
     // Metodo para retornar uma entidade pelo id
     private EntregaEntity obterEntregaEntityPorId(Integer id) {
@@ -80,7 +83,7 @@ public class EntregaServiceImpl implements EntregaService {
                     latitudeAndlongitude.getFirst(), latitudeAndlongitude.getSecond()));
 
         } catch (Exception e) {
-            // TODO: Apenas logar o erro, não impactar a criação da entrega por conta de
+            //IMPLEMENTAR: Se der tempo, apenas logar o erro, não impactar a criação da entrega por conta de
             // rastreamento
         }
 
@@ -117,7 +120,7 @@ public class EntregaServiceImpl implements EntregaService {
                     latitudeAndlongitude.getFirst(), latitudeAndlongitude.getSecond()));
 
         } catch (Exception e) {
-            // TODO: Apenas logar o erro, não impactar a criação da entrega por conta de
+        	//IMPLEMENTAR: Se der tempo, apenas logar o erro, não impactar a criação da entrega por conta de
             // rastreamento ou finalização de pedido
         }
 

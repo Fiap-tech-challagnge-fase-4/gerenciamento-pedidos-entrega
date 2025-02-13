@@ -23,7 +23,7 @@ import br.com.fiap.entrega.exceptions.EntityNotFoundException;
 @AutoConfigureTestDatabase
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class EntregaServiceImplIT {
+class EntregaServiceImplIT {
 
     
     @LocalServerPort
@@ -114,10 +114,8 @@ public class EntregaServiceImplIT {
         entrega.setStatusentrega(StatusEntrega.ENTREGUE);
         EntregaEntity entregaEntity = entregaRepository.save(entrega);
         
-		// Act 
-        IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
-            entregaService.finalizarEntrega(entregaEntity.getId());
-        });
+        // Act
+     	IllegalStateException exception = executarExclusaoHelper(entregaEntity.getId());
 
         //Assert  
         assertEquals("A entrega não pode ser mais modificada.", exception.getMessage());
@@ -214,12 +212,10 @@ public class EntregaServiceImplIT {
 		// Arrange
         EntregaEntity entity = gerarUmaEntregaEntity();
         entity.setStatusentrega(StatusEntrega.ENTREGUE);
-		EntregaEntity entregaEntity = entregaRepository.save(entity);
+		EntregaEntity entregaEntity = entregaRepository.save(entity);        
         
-		// Act 
-        IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
-            entregaService.excluirEntrega(entregaEntity.getId());
-        });
+        // Act
+		IllegalStateException exception = executarExclusaoHelper(entregaEntity.getId());
 
         //Assert  
         assertEquals("A entrega não pode ser mais modificada.", exception.getMessage());
@@ -301,5 +297,11 @@ public class EntregaServiceImplIT {
                 LocalDateTime.now(),
                 StatusEntrega.PENDENTE,
                 "SP TRANSPORTES");
+    }
+    
+    private IllegalStateException executarExclusaoHelper(int entregaId) {    	
+    	return assertThrows(IllegalStateException.class, () -> {
+    		entregaService.excluirEntrega(entregaId);
+        });    	
     }
 }

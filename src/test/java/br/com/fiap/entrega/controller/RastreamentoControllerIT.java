@@ -27,7 +27,7 @@ import io.restassured.RestAssured;
 @AutoConfigureTestDatabase
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class RastreamentoControllerIT {
+class RastreamentoControllerIT {
     
     @LocalServerPort
 	private int port;

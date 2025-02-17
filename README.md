@@ -7,6 +7,7 @@ Este projeto faz parte do *Tech Challenge - Fase 4*, nele foi construido um Micr
 - **Java 17**: Versão de linguagem utilizada.
 - **Spring Boot**: Framework para desenvolvimento de aplicações Java.
 - **Swagger**: Para documentação e testes das APIs.
+- **RabbitMQ**: Mensageria utilizada para troca de mensagens assíncronas entre microsserviços.
 - **JUnit, AssertJ e RestAssured**: Para criação de testes unitários e de integração.
 
 ## Para executar a aplicação via Docker, siga os comandos abaixo:

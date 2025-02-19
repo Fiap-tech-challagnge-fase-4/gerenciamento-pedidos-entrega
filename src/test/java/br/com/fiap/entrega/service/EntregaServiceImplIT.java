@@ -267,7 +267,7 @@ class EntregaServiceImplIT {
 		// Assert
 		assertThat(listaEntregas)
 	    .isNotEmpty()
-	    .hasSize(2)
+	    .hasSize(3)
 		.allSatisfy(entrega -> assertThat(entrega).isNotNull());
 	}
 
